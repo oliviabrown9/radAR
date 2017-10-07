@@ -138,10 +138,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let task = session.dataTask(with: request) { (data, response, error) in
             
-            let jsonString = "\(response!)"
+            
 //            if let data = data {
 //                let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
 //
+//            }
+            
+            let jsonString = "\(response!)"
             
             self.processJson(text: jsonString)
             
@@ -149,10 +152,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 //                print(json)
                 self.processJson(text: jsonString)
             }
+        task.resume()
         setUpLocationManager()
         }
-        
-//        task.resume()
+    
     
 //    }
 //}
