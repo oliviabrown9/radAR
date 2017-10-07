@@ -71,8 +71,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-    func processJson(text: Any?) {
-        guard let targetData = text as? [[String: Any]] else {
+    func processJson(text: String) {
+        guard let targetData = text.toJSON() as? [[String: Any]] else {
             return
         }
 
@@ -140,8 +140,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
             if let data = data {
                 let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                
-                self.processJson(text: json)
+                print(json)
             }
         }
         task.resume()
