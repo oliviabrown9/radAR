@@ -27,6 +27,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // Fake date rn because we don't have data
     var mostRecentUserLocation: CLLocation? {
         didSet {
+                updateBearPosition()
             print("LOADED USER LOCATION")
         }
     }
@@ -42,35 +43,40 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var targetArray: [Target] = [] {
         didSet {
-            guard let userLocation = mostRecentUserLocation else {
-                print("yo this doesn't work")
-                return
-            }
             
-            for target in targetArray {
-                //update existing node if it exists
-                if let existingNode = targetNodes[target.id] {
-                    print("node already exists")
-                    let move = SCNAction.move (
-                        to: target.sceneKitCoordinate(relativeTo: userLocation),
-                        duration: TimeInterval(5))
-                    
-                    print("\(target.sceneKitCoordinate(relativeTo: userLocation))")
-                    existingNode.runAction(move)
-                }
-                    // otherwise, make a new node
-                else {
-                    print("umm it thinks that the node already exists")
-                    let newNode = makeBearNode()
-                    targetNodes[target.id] = newNode
-                    
-                    newNode.position = target.sceneKitCoordinate(relativeTo: userLocation)
-                    sceneView.scene.rootNode.addChildNode(newNode)
-                }
-            }
+            updateBearPosition()
         }
     }
     
+    func updateBearPosition() {
+        guard let userLocation = mostRecentUserLocation else {
+            print("yo this doesn't work")
+            return
+        }
+        
+        for target in targetArray {
+            //update existing node if it exists
+            if let existingNode = targetNodes[target.id] {
+                print("node already exists")
+                let move = SCNAction.move (
+                    to: target.sceneKitCoordinate(relativeTo: userLocation),
+                    duration: TimeInterval(5))
+                
+                print("\(target.sceneKitCoordinate(relativeTo: userLocation))")
+                existingNode.runAction(move)
+            }
+                // otherwise, make a new node
+            else {
+                print("umm it thinks that the node already exists")
+                let newNode = makeBearNode()
+                targetNodes[target.id] = newNode
+                
+                newNode.position = target.sceneKitCoordinate(relativeTo: userLocation)
+                sceneView.scene.rootNode.addChildNode(newNode)
+            }
+        }
+        
+    }
 
     func processJson(json: Any) -> [Target]? {
         guard let targetData = json as? [[String: Any]] else {
@@ -112,6 +118,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        setUpLocationManager()
+
         urlPath += buildQueryString(fromDictionary:param)
         let url = URL(string: urlPath)!
         
@@ -135,7 +143,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             }
         }
         task.resume()
-        setUpLocationManager()
         }
     
     
@@ -180,6 +187,7 @@ extension ViewController: CLLocationManagerDelegate {
         mostRecentUserLocation = locationManager.location
     }
     
+
     // Updates location variable every time location changes
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         mostRecentUserLocation = locations[0] as CLLocation
