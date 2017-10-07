@@ -71,13 +71,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-    func processJson(text: String) {
-        guard let targetData = text.toJSON() as? [[String: Any]] else {
+    func processJson(text: Any?) {
+        guard let targetData = text as? [[String: Any]] else {
+            print("y'all this is a big yikes !")
             return
         }
 
         targetArray = targetData.map { target in
-            let id = target["call"] as? String ?? "Unknown"
+            let id = target["id"] as? String ?? "Unknown"
+            print(id)
             let lat = target["lat"] as? Double ?? 0
             let long = target["lng"] as? Double ?? 0
             let alt = target["alt"] as? Double ?? 0
@@ -137,28 +139,22 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let session = URLSession.shared
         
         let task = session.dataTask(with: request) { (data, response, error) in
-            
-            
-//            if let data = data {
-//                let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
-//
-//            }
-            
-            let jsonString = "\(response!)"
-            
-            self.processJson(text: jsonString)
-            
-                print(jsonString)
-//                print(json)
-                self.processJson(text: jsonString)
+        
+            if let data = data {
+                let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                
+                
+                let hm = "\(json)"
+                let ugh = self.processJson(text: json)
+                print(ugh)
+//                print("\(json!)")
+                print(json)
             }
+        }
         task.resume()
         setUpLocationManager()
         }
     
-    
-//    }
-//}
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
