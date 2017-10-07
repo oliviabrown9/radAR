@@ -72,30 +72,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
 
-    func processJson(text: String) {
-        guard let targetData = text.toJSON() as? [[String: Any]] else {
-
-            return
+    func processJson(json: Any) -> [Target]? {
+        guard let targetData = json as? [[String: Any]] else {
+            return nil
         }
 
-        targetArray = targetData.map { target in
-            let id = target["id"] as? String ?? "Unknown"
-            print(id)
-            let lat = target["lat"] as? Double ?? 0
-            let long = target["lng"] as? Double ?? 0
-            let alt = target["alt"] as? Double ?? 0
-
-            let target = Target(
-                id: id,
-                lat: lat,
-                long: long,
-                alt: alt
-                )
-
-            return target
-            }.filter { target in
-                return (target.id != "Unknown")
-        }
+        return targetData.flatMap(Target.init)
     }
 
     func makeBearNode() -> SCNNode {
@@ -111,6 +93,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
         // Comment next line once app is ready - good to check performance
         sceneView.showsStatistics = true
+        
+        print(targetArray)
     }
     
     func buildQueryString(fromDictionary parameters: [String:String]) -> String {
@@ -143,8 +127,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
             if let data = data {
                 let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
-
+                let testTarget: [Target]? = self.processJson(json: json)
                 print(json)
+                print(testTarget)
+                
+                self.targetArray = testTarget!
             }
         }
         task.resume()

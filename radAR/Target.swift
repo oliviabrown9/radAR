@@ -15,13 +15,21 @@ struct Target {
     let id: String
     let long: Double
     let lat: Double
-    let alt: Double
     
-    init(id: String, lat: Double, long: Double, alt: Double) {
+    init(id: String, lat: Double, long: Double) {
         self.id = id
         self.lat = lat
         self.long = long
-        self.alt = alt
+    }
+    
+    init?(json: [String: Any]) {
+        guard let id = json["id"] as? Int else { return nil }
+        
+        let location = json["location"] as? [String: Any]
+        let coordinates = location?["coordinates"] as? [Double]
+        self.lat = coordinates?[0] ?? 0
+        self.long = coordinates?[1] ?? 0
+        self.id = "\(id)"
     }
 
 func sceneKitCoordinate(relativeTo userLocation: CLLocation) -> SCNVector3 {
@@ -34,7 +42,7 @@ func sceneKitCoordinate(relativeTo userLocation: CLLocation) -> SCNVector3 {
     let northSouthOffset = distance * cos(headingRadians)  * distanceScale
     
     let altitudeScale: Double = 1/140 //1/20
-    let upDownOffset = alt * altitudeScale
+    let upDownOffset: Double = 0//alt * altitudeScale
 
     return SCNVector3(eastWestOffset, upDownOffset, -northSouthOffset)
 }
@@ -44,7 +52,7 @@ func sceneKitCoordinate(relativeTo userLocation: CLLocation) -> SCNVector3 {
         
         return CLLocation(
             coordinate: coordinate,
-            altitude: alt,
+            altitude: 0,
             horizontalAccuracy: 1,
             verticalAccuracy: 1,
             timestamp: Date()
