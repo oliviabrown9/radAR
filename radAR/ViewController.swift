@@ -62,17 +62,22 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     to: target.sceneKitCoordinate(relativeTo: userLocation),
                     duration: TimeInterval(5))
                 
+                let scale = SCNAction.scale(by: 0.01, duration: TimeInterval(5))
+                
                 print("\(target.sceneKitCoordinate(relativeTo: userLocation))")
                 existingNode.runAction(move)
+                existingNode.runAction(scale)
             }
                 // otherwise, make a new node
             else {
-                print("umm it thinks that the node already exists")
                 let newNode = makeBearNode()
                 targetNodes[target.id] = newNode
                 
                 newNode.position = target.sceneKitCoordinate(relativeTo: userLocation)
                 sceneView.scene.rootNode.addChildNode(newNode)
+                
+                let scale = SCNAction.scale(by: 0.01, duration: TimeInterval(5))
+                newNode.runAction(scale)
             }
         }
         
