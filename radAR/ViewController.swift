@@ -55,6 +55,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             return
         }
         
+        makeAnArrow()
+        
         for target in targetArray {
             //update existing node if it exists
             
@@ -239,7 +241,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         else {
             collectionAllowed = true
         }
+    }
     
+    func makeAnArrow() {
+        let arrowPath = UIBezierPath()
+        
+        arrowPath.move(to: CGPoint(
+            x: view.frame.midX,
+            y: 20))
+        
+        arrowPath.addLine(to: CGPoint(
+            x: targetArray[0].lat,
+            y: targetArray[0].long))
+        
+        let arrowLayer = CAShapeLayer()
+        arrowLayer.path = arrowPath.cgPath
+        arrowLayer.lineCap = kCALineCapRound
+        arrowLayer.lineJoin = kCALineJoinRound
+        arrowLayer.strokeColor = UIColor(white: 1.0, alpha: 1.0).cgColor
+        arrowLayer.fillColor = nil
+        arrowLayer.lineWidth = 8
     }
     
     // allow tap to add?
