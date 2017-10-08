@@ -21,7 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var urlPath = "http://192.241.200.251/arobject/"
     
-    var param = ["lat": "37.8710439", "long": "-122.2507724", "alt": "10"]
+    var param: [String:AnyObject] = ["lat": "37.8710439" as AnyObject, "long": "-122.2507724" as AnyObject]
     
     fileprivate let locationManager = CLLocationManager()
     
@@ -117,12 +117,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             
             let locationArray = [locationManager.location!.coordinate.latitude, locationManager.location!.coordinate.latitude]
 
+            param = ["description": "" as AnyObject,
+                     "location": "POINT(\(locationArray[0]) \(locationArray[1]))" as AnyObject,
+                     "owner": "Olivia" as AnyObject,
+                     "asset": "bear.obj".data(using: .utf8) as AnyObject
+            ]
 
-            param = [ "owner": "hm",
-                      "description": "heya",
-                      "location": "POINT(\(locationArray[0]) \(locationArray[1]))",
-                      "asset": "bear.obj"]
-                
             let bodyString = buildQueryString(fromDictionary:param)
             
             let url = URL(string: urlString)!
@@ -172,8 +172,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         print(targetArray)
     }
     
-    func buildQueryString(fromDictionary parameters: [String:String]) -> String {
-        var urlVars:[String] = []
+    func buildQueryString(fromDictionary parameters: [String:AnyObject]) -> String {
+        var urlVars:[AnyObject] = []
         
         for (k, value) in parameters {
             if let encodedValue = value.addingPercentEncoding(withAllowedCharacters:.urlQueryAllowed) {
@@ -190,7 +190,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         setUpLocationManager()
         setupTap()
 
-        urlPath += buildQueryString(fromDictionary:param)
+        urlPath += buildQueryString(fromDictionary: param)
         let url = URL(string: urlPath)!
         
         var request = URLRequest(url: url)
