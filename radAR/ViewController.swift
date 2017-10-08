@@ -261,6 +261,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         arrowLayer.strokeColor = UIColor(white: 1.0, alpha: 1.0).cgColor
         arrowLayer.fillColor = nil
         arrowLayer.lineWidth = 8
+        
+        view.layer.addSublayer(arrowLayer)
     }
     
     // allow tap to add?
