@@ -118,11 +118,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             let locationArray = [locationManager.location!.coordinate.latitude, locationManager.location!.coordinate.latitude]
             param = ["owner": "",
                      "description": "",
-                     "location": "\(locationArray)",
+                     "location": "POINT(\(locationArray[0]) \(locationArray[1]))",
                      "asset": "bear.obj"]
                 
             urlString += buildQueryString(fromDictionary:param)
-            let url = URL(string: urlPath)!
+            let url = URL(string: urlString)!
+            
+            print("yo this is your url: \(url)")
             
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
@@ -179,6 +181,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         super.viewWillAppear(animated)
         
         setUpLocationManager()
+        setupTap()
 
         urlPath += buildQueryString(fromDictionary:param)
         let url = URL(string: urlPath)!
