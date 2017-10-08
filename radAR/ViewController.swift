@@ -21,7 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var urlPath = "http://192.241.200.251/arobject/"
     
-    var param: [String:AnyObject] = ["lat": "37.8710439" as AnyObject, "long": "-122.2507724" as AnyObject]
+    var param = ["lat": "37.8710439", "long": "-122.2507724", "alt": "10"]
     
     fileprivate let locationManager = CLLocationManager()
     
@@ -116,46 +116,45 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             let urlString = "http://192.241.200.251/arobject/"
             
             let locationArray = [locationManager.location!.coordinate.latitude, locationManager.location!.coordinate.latitude]
-            param = ["description": "" as AnyObject,
-                     "location": "POINT(\(locationArray[0]) \(locationArray[1]))" as AnyObject,
-                     "owner": "Olivia" as AnyObject,
-                     "asset": "bear.obj".data(using: .utf8) as AnyObject
-            ]
+            param = ["description": "This is a description.",
+                     "location": "POINT(\(locationArray[0]) \(locationArray[1]))",
+                     "owner": "Olivia",
+                     "asset": "bear.obj"]
                 
             let bodyString = buildQueryString(fromDictionary:param)
             
             let url = URL(string: urlString)!
-            
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.httpBody = bodyString.data(using: .utf8)
+
             
-            
-            
-            
-            
-            let session = URLSession.shared
-            let task = session.dataTask(with: request) { (data, response, error) in
-                
-                if let data = data {
-                    let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                    if let testTarget: [Target]? = self.processJson(json: json) {
-                        if testTarget == nil {
-                            print("yall are fucked")
-                            print(json)
-                        } else {
-                            self.targetArray = testTarget!
-                            print("there should be a bear.")
-                        }
-                        print(testTarget)
-                    }
-                    print(json)
-                }
-            }
-            task.resume()
+            constructTask(request: request)
             
             updateBearPosition()
         }
+    }
+    
+    func constructTask(request: URLRequest) {
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) { (data, response, error) in
+            
+            if let data = data {
+                let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                if let testTarget: [Target]? = self.processJson(json: json) {
+                    if testTarget == nil {
+                        print("yall are fucked")
+                        print(json)
+                    } else {
+                        self.targetArray = testTarget!
+                        print("there should be a bear.")
+                    }
+                    print(testTarget)
+                }
+                print(json)
+            }
+        }
+        task.resume()
     }
     
     override func viewDidLoad() {
@@ -170,7 +169,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         print(targetArray)
     }
     
-    func buildQueryString(fromDictionary parameters: [String:AnyObject]) -> String {
+    func buildQueryString(fromDictionary parameters: [String:String]) -> String {
         var urlVars:[String] = []
         
         for (k, value) in parameters {
@@ -187,7 +186,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         setUpLocationManager()
 
-        urlPath += buildQueryString(fromDictionary: param)
+        urlPath += buildQueryString(fromDictionary:param)
         let url = URL(string: urlPath)!
         
         var request = URLRequest(url: url)
@@ -196,26 +195,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let configuration = ARWorldTrackingConfiguration()
         configuration.worldAlignment = .gravityAndHeading
         sceneView.session.run(configuration)
-        let session = URLSession.shared
         
-        let task = session.dataTask(with: request) { (data, response, error) in
-        
-            if let data = data {
-                let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                if let testTarget: [Target]? = self.processJson(json: json) {
-                    if testTarget == nil {
-                        print("yall are fucked")
-                        print(json) 
-                    } else {
-                        self.targetArray = testTarget!
-                        print("there should be a bear.")
-                    }
-                    print(testTarget)
-                }
-                print(json)
-            }
-        }
-        task.resume()
+        constructTask(request: request)
         }
     
     
