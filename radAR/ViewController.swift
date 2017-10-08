@@ -14,10 +14,11 @@ import SceneKit
 import ModelIO
 import SceneKit.ModelIO
 
-class ViewController: UIViewController, ARSCNViewDelegate {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
+    var tableView: UITableView = UITableView()
     
     var urlPath = "http://192.241.200.251/arobject/"
     
@@ -187,6 +188,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.frame         =   CGRect(x:0, y:50, width:320, height:200)
+        tableView.delegate      =   self
+        tableView.dataSource    =   self
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        self.view.addSubview(tableView)
         sceneView.delegate = self
         let scene = SCNScene()
         sceneView.scene = scene
@@ -194,6 +202,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Comment next line once app is ready - good to check performance
         sceneView.showsStatistics = true
         print(targetArray)
+    }
+    
+    func tableView(numberOfRowsInSection: Int) -> Int {
+        return self.targetArray.count
+    }
+    
+    func tableView(cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell") as! UITableViewCell
+        cell.textLabel?.text = self.targetArray[indexPath.row].id
+        return cell
     }
 
     func buildQueryString(fromDictionary parameters: [String:String]) -> String {

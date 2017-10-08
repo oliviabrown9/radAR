@@ -17,6 +17,8 @@
 		BAB8A79E1F88B08D00464DE9 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8A79D1F88B08D00464DE9 /* UserDefaults.swift */; };
 		BAB8A7A51F88E95900464DE9 /* bear.obj in Resources */ = {isa = PBXBuildFile; fileRef = BAB8A7A31F88E90D00464DE9 /* bear.obj */; };
 		BAB8A7A61F88E95C00464DE9 /* bear.mtl in Resources */ = {isa = PBXBuildFile; fileRef = BAB8A7A41F88E91400464DE9 /* bear.mtl */; };
+		D1C2F04C1F8A0DCB004FC2D6 /* TargetListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C2F04A1F8A0DCB004FC2D6 /* TargetListTableViewController.swift */; };
+		D1C2F04D1F8A0DCB004FC2D6 /* TargetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C2F04B1F8A0DCB004FC2D6 /* TargetTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		BAB8A79D1F88B08D00464DE9 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		BAB8A7A31F88E90D00464DE9 /* bear.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = bear.obj; sourceTree = "<group>"; };
 		BAB8A7A41F88E91400464DE9 /* bear.mtl */ = {isa = PBXFileReference; lastKnownFileType = text; path = bear.mtl; sourceTree = "<group>"; };
+		D1C2F04A1F8A0DCB004FC2D6 /* TargetListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetListTableViewController.swift; sourceTree = "<group>"; };
+		D1C2F04B1F8A0DCB004FC2D6 /* TargetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +71,8 @@
 				7531C5BD1F88AD91009223EC /* AppDelegate.swift */,
 				7531C5BF1F88AD91009223EC /* art.scnassets */,
 				7531C5C11F88AD91009223EC /* ViewController.swift */,
+				D1C2F04A1F8A0DCB004FC2D6 /* TargetListTableViewController.swift */,
+				D1C2F04B1F8A0DCB004FC2D6 /* TargetTableViewCell.swift */,
 				754271101F88FE9D00936E9A /* Target.swift */,
 				7531C5C31F88AD91009223EC /* Main.storyboard */,
 				7531C5C61F88AD91009223EC /* Assets.xcassets */,
@@ -156,7 +162,9 @@
 			files = (
 				7531C5C21F88AD91009223EC /* ViewController.swift in Sources */,
 				7531C5BE1F88AD91009223EC /* AppDelegate.swift in Sources */,
+				D1C2F04D1F8A0DCB004FC2D6 /* TargetTableViewCell.swift in Sources */,
 				754271111F88FE9D00936E9A /* Target.swift in Sources */,
+				D1C2F04C1F8A0DCB004FC2D6 /* TargetListTableViewController.swift in Sources */,
 				BAB8A79E1F88B08D00464DE9 /* UserDefaults.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -295,12 +303,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-
-				DEVELOPMENT_TEAM = 3W4P6VJ7EM;
-
+				DEVELOPMENT_TEAM = LBQM2623HP;
 				INFOPLIST_FILE = radAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = stanford.isBetter.radAR;
+				PRODUCT_BUNDLE_IDENTIFIER = suvir.radAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -312,12 +318,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-
-				DEVELOPMENT_TEAM = 3W4P6VJ7EM;
-
+				DEVELOPMENT_TEAM = LBQM2623HP;
 				INFOPLIST_FILE = radAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = stanford.isBetter.radAR;
+				PRODUCT_BUNDLE_IDENTIFIER = suvir.radAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
