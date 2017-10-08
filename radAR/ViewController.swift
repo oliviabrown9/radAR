@@ -67,7 +67,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 
                 print("\(target.sceneKitCoordinate(relativeTo: userLocation))")
                 existingNode.runAction(move)
-                existingNode.runAction(scale)
+
+                 existingNode.runAction(scale)
+
 
             }
                 // otherwise, make a new node
@@ -115,7 +117,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             
             let locationArray = [locationManager.location!.coordinate.latitude, locationManager.location!.coordinate.longitude]
 
+
             param = ["description": "",
+
                      "location": "POINT(\(locationArray[0]) \(locationArray[1]))",
                      "owner": "",
                      "asset": "bear.obj"]
@@ -126,8 +130,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.httpBody = bodyString.data(using: .utf8)
+            
+            let temporaryTarget: Target = Target(id: "-1", lat: locationArray[0], long: locationArray[1])
+            
+            targetArray.append(temporaryTarget)
 
-            constructTask(request: request)
             updateBearPosition()
         }
     }
@@ -205,22 +212,23 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
     
+//
+//    func touchesBegan(touches: Set<UITouch>, with event: UIEvent?) {
+//        guard let sceneView = self.view as? ARSCNView else {
+//            return
+//        }
+//
+//        if let currentFrame = sceneView.session.currentFrame {
+//
+//            // Create a transform with a translation of 0.2 meters in front of the camera
+//            var translation = matrix_identity_float4x4
+//            translation.columns.3.z = -0.4
+//            let transform = simd_mul(currentFrame.camera.transform, translation)
+//
+//
+//        }
+//    }
     
-    func touchesBegan(touches: Set<UITouch>, with event: UIEvent?) {
-        guard let sceneView = self.view as? ARSCNView else {
-            return
-        }
-        
-        if let currentFrame = sceneView.session.currentFrame {
-            
-            // Create a transform with a translation of 0.2 meters in front of the camera
-            var translation = matrix_identity_float4x4
-            translation.columns.3.z = -0.4
-            let transform = simd_mul(currentFrame.camera.transform, translation)
-            
-            
-        }
-    }
     var addAllowed: Bool = false
     // MARK: add target button
     @IBAction func addTargetButtonPressed(_ sender: UIBarButtonItem) {
