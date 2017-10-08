@@ -48,16 +48,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    var collectionAllowed: Bool = false
     func updateBearPosition() {
         guard let userLocation = mostRecentUserLocation else {
             print("yo this doesn't work")
             return
         }
         
+        makeAnArrow()
+        
         for target in targetArray {
             //update existing node if it exists
             
             let dist = target.location.distance(from: mostRecentUserLocation!)
+            checkCollectionAllowed(target: target)
             print("Distance to bear: \(dist)")
             if let existingNode = targetNodes[target.id] {
                 let scale_matrix = SCNMatrix4MakeScale(0.05, 0.05, 0.05)
@@ -145,8 +149,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func addCollected(collectedTarget: String) {
-        if !SharingManager.sharedInstance.collection.contains(collectedTarget) {
+        if !SharingManager.sharedInstance.collection.contains(collectedTarget) && collectionAllowed == true {
             SharingManager.sharedInstance.collection.append(collectedTarget)
+            collectionAllowed = false
+            
             print(SharingManager.sharedInstance.collection)
         }
     }
@@ -225,6 +231,38 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         if addAllowed == false {
             addAllowed = true
         }
+    }
+    
+    func checkCollectionAllowed(target: Target) {
+        let dist = target.location.distance(from: mostRecentUserLocation!)
+        if dist >= 5 {
+            collectionAllowed = false
+        }
+        else {
+            collectionAllowed = true
+        }
+    }
+    
+    func makeAnArrow() {
+        let arrowPath = UIBezierPath()
+        
+        arrowPath.move(to: CGPoint(
+            x: view.frame.midX,
+            y: 20))
+        
+        arrowPath.addLine(to: CGPoint(
+            x: targetArray[0].lat,
+            y: targetArray[0].long))
+        
+        let arrowLayer = CAShapeLayer()
+        arrowLayer.path = arrowPath.cgPath
+        arrowLayer.lineCap = kCALineCapRound
+        arrowLayer.lineJoin = kCALineJoinRound
+        arrowLayer.strokeColor = UIColor(white: 1.0, alpha: 1.0).cgColor
+        arrowLayer.fillColor = nil
+        arrowLayer.lineWidth = 8
+        
+        view.layer.addSublayer(arrowLayer)
     }
     
     // allow tap to add?
