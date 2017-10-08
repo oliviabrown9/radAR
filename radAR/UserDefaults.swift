@@ -2,38 +2,33 @@
 //  UserDefaults.swift
 //  radAR
 //
-//  Created by Fiona Carty on 10/6/17.
+//  Created by Olivia Brown on 10/6/17.
 //  Copyright © 2017 Olivia Brown. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-class UserDefault {
+class SharingManager {
     
-    var standard: UserDefaults = UserDefaults.standard
+    var userDefaults: UserDefaults = UserDefaults.standard
     
-   
-    
-    var id: Int = 0 {
+    var collection: [String] = [] {
         didSet {
-           standard.set(id, forKey: "Id")
+            userDefaults.set(collection, forKey: "Collection")
         }
     }
     
-    var asset: String = "" {
-        didSet{
-            standard.set(asset, forKey: "Asset")
-        }
-    }
+    static let sharedInstance = SharingManager()
 
     private init () {
 
-        let storedId = standard.integer(forKey: "Id")
-        let storedAsset = standard.string(forKey: "Asset")
-        
-        
-        id = storedId
-        asset = storedAsset!
+        let storedCollection = userDefaults.array(forKey: "Collection") as? [String]
+        if storedCollection != nil {
+            collection = storedCollection!
+        }
+        else {
+            userDefaults.set(collection, forKey: "Collection")
+        }
     }
 }

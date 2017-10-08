@@ -18,7 +18,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
-    
     var urlPath = "http://192.241.200.251/arobject/"
     
     var param = ["lat": "37.8710439", "long": "-122.2507724"]
@@ -61,48 +60,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             let dist = target.location.distance(from: mostRecentUserLocation!)
             print("Distance to bear: \(dist)")
             if let existingNode = targetNodes[target.id] {
-                print("node already exists")
-                /*
-                let move = SCNAction.move (
-                    to: target.sceneKitCoordinate(relativeTo: userLocation),
-                    duration: TimeInterval(2))
-                
-                let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(2))
-                 */
-                print("Node size: \(existingNode.scale)")
                 let scale_matrix = SCNMatrix4MakeScale(0.05, 0.05, 0.05)
                 existingNode.transform = scale_matrix
-                print("\(target.sceneKitCoordinate(relativeTo: userLocation))")
-
-                //existingNode.runAction(move)
-               // existingNode.runAction(scale)
-
-
             }
                 // otherwise, make a new node
             else {
-                let newNode = makeBearNode()
-                targetNodes[target.id] = newNode
+                if !SharingManager.sharedInstance.collection.contains(target.id) {
+                    let newNode = makeBearNode()
+                    targetNodes[target.id] = newNode
                 
-                newNode.position = target.sceneKitCoordinate(relativeTo: userLocation)
-                sceneView.scene.rootNode.addChildNode(newNode)
-
+                    newNode.position = target.sceneKitCoordinate(relativeTo: userLocation)
                 
-                let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(2))
-//                newNode.runAction(scale)
-
+                    sceneView.scene.rootNode.addChildNode(newNode)
+                }
             }
         }
     }
     
     func scaleTarget(recentUserLocation: CLLocation, target: Target) {
-        
         let dist = recentUserLocation.distance(from: target.location)
-        
-        
-        
     }
-    
 
     func processJson(json: Any) -> [Target]? {
         guard let targetData = json as? [[String: Any]] else {
@@ -137,9 +114,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             
             let locationArray = [locationManager.location!.coordinate.latitude, locationManager.location!.coordinate.longitude]
 
-
             param = ["description": "",
-
                      "location": "POINT(\(locationArray[0]) \(locationArray[1]))",
                      "owner": "",
                      "asset": "bear.obj"]
@@ -154,29 +129,39 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             constructTask(request: request)
             
             let temporaryTarget: Target = Target(id: "\(numberOfTaps)", lat: locationArray[0], long: locationArray[1])
-            
             targetArray.append(temporaryTarget)
-
             updateBearPosition()
         }
+        else {
+            guard let collectedNode = hitResults.first?.node,
+                let myNode = targetNodes.allKeys(forValue: collectedNode).first,
+                let myTarget = targetArray.first(where: { $0.id == myNode}),
+                let myIdentifier: String? = myTarget.id else {
+                return
+            }
+            addCollected(collectedTarget: myIdentifier!)
+        }
         post = false
+    }
+    
+    func addCollected(collectedTarget: String) {
+        if !SharingManager.sharedInstance.collection.contains(collectedTarget) {
+            SharingManager.sharedInstance.collection.append(collectedTarget)
+            print(SharingManager.sharedInstance.collection)
+        }
     }
     
     func constructTask(request: URLRequest) {
         let session = URLSession.shared
         let task = session.dataTask(with: request) { (data, response, error) in
             
-
             if !self.post {
                 if let data = data {
                     let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
                     if let testTarget: [Target]? = self.processJson(json: json) {
-                        if testTarget == nil {
-                            print("yall are fucked")
-                            print(json)
-                        } else {
+                        if testTarget == nil {}
+                        else {
                             self.targetArray = testTarget!
-                            print("there should be a bear.")
                         }
                     }
                 }
@@ -299,7 +284,6 @@ extension ViewController: CLLocationManagerDelegate {
     // Updates location variable every time location changes
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         mostRecentUserLocation = locations[0] as CLLocation
-        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
@@ -321,10 +305,9 @@ extension MDLMaterial {
     }
 }
 
-// MARK: - String Extension
-extension String {
-    func toJSON() -> Any? {
-        guard let data = self.data(using: .utf8, allowLossyConversion: false) else { return nil }
-        return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+// MARK: - Dictionary Extension
+extension Dictionary where Value: Equatable {
+    func allKeys(forValue val: Value) -> [Key] {
+        return self.filter { (keyvalue) in keyvalue.value == val }.map { $0.0 }
     }
 }
