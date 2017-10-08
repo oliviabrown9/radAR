@@ -107,7 +107,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.gestureRecognizers = [tapRecognizer]
     }
     
+    var numberOfTaps: Int = 0
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        numberOfTaps -= 1
         let location = sender.location(in: sceneView)
         
         let hitResults = sceneView.hitTest(location, options: nil)
@@ -127,7 +129,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             request.httpMethod = "POST"
             request.httpBody = bodyString.data(using: .utf8)
             
-            let temporaryTarget: Target = Target(id: "-1", lat: locationArray[0], long: locationArray[1])
+            let temporaryTarget: Target = Target(id: "\(numberOfTaps)", lat: locationArray[0], long: locationArray[1])
             
             targetArray.append(temporaryTarget)
 
