@@ -61,13 +61,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 print("node already exists")
                 let move = SCNAction.move (
                     to: target.sceneKitCoordinate(relativeTo: userLocation),
-                    duration: TimeInterval(5))
+                    duration: TimeInterval(2))
                 
-//                let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(5))
+                let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(2))
                 
                 print("\(target.sceneKitCoordinate(relativeTo: userLocation))")
-                existingNode.runAction(move)
-//                existingNode.runAction(scale)
+                //existingNode.runAction(move)
+                existingNode.runAction(scale)
             }
                 // otherwise, make a new node
             else {
@@ -77,7 +77,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 newNode.position = target.sceneKitCoordinate(relativeTo: userLocation)
                 sceneView.scene.rootNode.addChildNode(newNode)
                 
-//                let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(5))
+                let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(2))
 //                newNode.runAction(scale)
             }
         }
@@ -219,11 +219,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - ARSCNViewDelegate
     
     // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        
-        targetNodes[target.id]
-        let leftCenterPoint
-    }
+//    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+//
+//
+//    }
 
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
