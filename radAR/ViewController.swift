@@ -68,6 +68,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 print("\(target.sceneKitCoordinate(relativeTo: userLocation))")
                 //existingNode.runAction(move)
                 existingNode.runAction(scale)
+
             }
                 // otherwise, make a new node
             else {
@@ -76,9 +77,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 
                 newNode.position = target.sceneKitCoordinate(relativeTo: userLocation)
                 sceneView.scene.rootNode.addChildNode(newNode)
+
                 
                 let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(2))
 //                newNode.runAction(scale)
+
             }
         }
         
@@ -95,6 +98,57 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func makeBearNode() -> SCNNode {
         let node = SCNNode(mdlObject: bearObject)
         return node
+    }
+    
+    func setupTap() {
+        let tapRecognizer = UITapGestureRecognizer()
+        tapRecognizer.numberOfTapsRequired = 1
+        tapRecognizer.numberOfTouchesRequired = 1
+        tapRecognizer.addTarget(self, action: #selector(handleTap(_:)))
+        sceneView.gestureRecognizers = [tapRecognizer]
+    }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        let location = sender.location(in: sceneView)
+        
+        let hitResults = sceneView.hitTest(location, options: nil)
+        if hitResults.count == 0 {
+            var urlString = "http://192.241.200.251/arobject/"
+            
+            let locationArray = [locationManager.location!.coordinate.latitude, locationManager.location!.coordinate.latitude]
+            param = ["owner": "",
+                     "description": "",
+                     "location": "\(locationArray)",
+                     "asset": "bear.obj"]
+                
+            urlString += buildQueryString(fromDictionary:param)
+            let url = URL(string: urlPath)!
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            
+            let session = URLSession.shared
+            let task = session.dataTask(with: request) { (data, response, error) in
+                
+                if let data = data {
+                    let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                    if let testTarget: [Target]? = self.processJson(json: json) {
+                        if testTarget == nil {
+                            print("yall are fucked")
+                            print(json)
+                        } else {
+                            self.targetArray = testTarget!
+                            print("there should be a bear.")
+                        }
+                        print(testTarget)
+                    }
+                    print(json)
+                }
+            }
+            task.resume()
+            
+            updateBearPosition()
+        }
     }
     
     override func viewDidLoad() {
