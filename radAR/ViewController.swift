@@ -21,7 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var urlPath = "http://192.241.200.251/arobject/"
     
-    var param = ["lat": "37.8710439", "long": "-122.2507724", "alt": "10"]
+    var param: [String:AnyObject] = ["lat": "37.8710439" as AnyObject, "long": "-122.2507724" as AnyObject]
     
     fileprivate let locationManager = CLLocationManager()
     
@@ -116,10 +116,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             let urlString = "http://192.241.200.251/arobject/"
             
             let locationArray = [locationManager.location!.coordinate.latitude, locationManager.location!.coordinate.latitude]
-            param = ["description": "",
-                     "location": "POINT(\(locationArray[0]) \(locationArray[1]))",
-                     "owner": "",
-                     "asset": "bear.obj"]
+            param = ["description": "" as AnyObject,
+                     "location": "POINT(\(locationArray[0]) \(locationArray[1]))" as AnyObject,
+                     "owner": "Olivia" as AnyObject,
+                     "asset": "bear.obj".data(using: .utf8) as AnyObject
+            ]
                 
             let bodyString = buildQueryString(fromDictionary:param)
             
@@ -169,7 +170,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         print(targetArray)
     }
     
-    func buildQueryString(fromDictionary parameters: [String:String]) -> String {
+    func buildQueryString(fromDictionary parameters: [String:AnyObject]) -> String {
         var urlVars:[String] = []
         
         for (k, value) in parameters {
@@ -186,7 +187,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         setUpLocationManager()
 
-        urlPath += buildQueryString(fromDictionary:param)
+        urlPath += buildQueryString(fromDictionary: param)
         let url = URL(string: urlPath)!
         
         var request = URLRequest(url: url)
