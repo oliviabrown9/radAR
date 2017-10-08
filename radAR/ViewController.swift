@@ -33,6 +33,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    
+    
     // Put API call here
     // Parse JSON to targetArray?
     var targetNodes = [String: SCNNode]()
@@ -57,17 +59,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         for target in targetArray {
             //update existing node if it exists
+            
+            let dist = target.location.distance(from: mostRecentUserLocation!)
+            print("Distance to bear: \(dist)")
             if let existingNode = targetNodes[target.id] {
                 print("node already exists")
+                /*
                 let move = SCNAction.move (
                     to: target.sceneKitCoordinate(relativeTo: userLocation),
                     duration: TimeInterval(2))
                 
                 let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(2))
-                
+                 */
+                print("Node size: \(existingNode.scale)")
+                let scale_matrix = SCNMatrix4MakeScale(0.05, 0.05, 0.05)
+                existingNode.transform = scale_matrix
                 print("\(target.sceneKitCoordinate(relativeTo: userLocation))")
                 //existingNode.runAction(move)
-                existingNode.runAction(scale)
+               // existingNode.runAction(scale)
 
             }
                 // otherwise, make a new node
@@ -86,6 +95,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         
     }
+    
+    func scaleTarget(recentUserLocation: CLLocation, target: Target) {
+        
+        let dist = recentUserLocation.distance(from: target.location)
+        
+        
+        
+    }
+    
 
     func processJson(json: Any) -> [Target]? {
         guard let targetData = json as? [[String: Any]] else {
@@ -149,9 +167,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                         self.targetArray = testTarget!
                         print("there should be a bear.")
                     }
-                    print(testTarget)
+                    for target in testTarget! {
+                        self.targetNodes[target.id]?.transform = SCNMatrix4MakeScale(0.05, 0.05, 0.05)
+                    }
                 }
-                print(json)
+                
             }
         }
         task.resume()
@@ -288,6 +308,7 @@ extension ViewController: CLLocationManagerDelegate {
     // Updates location variable every time location changes
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         mostRecentUserLocation = locations[0] as CLLocation
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
