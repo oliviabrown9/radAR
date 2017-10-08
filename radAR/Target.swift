@@ -46,7 +46,6 @@ func sceneKitCoordinate(relativeTo userLocation: CLLocation) -> SCNVector3 {
 
     return SCNVector3(eastWestOffset, upDownOffset, -northSouthOffset)
 }
-    
     var location: CLLocation {
         let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
         
@@ -58,7 +57,6 @@ func sceneKitCoordinate(relativeTo userLocation: CLLocation) -> SCNVector3 {
             timestamp: Date()
         )
     }
-
 }
 
 // MARK: CLLocation Coordinate Heading

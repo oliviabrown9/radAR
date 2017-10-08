@@ -21,7 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var urlPath = "http://192.241.200.251/arobject/"
     
-    var param = ["lat": "37.8710439", "long": "-122.2507724", "alt": "10"]
+    var param = ["lat": "37.8710439", "long": "-122.2507724"]
     
     fileprivate let locationManager = CLLocationManager()
     
@@ -66,7 +66,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(2))
                 
                 print("\(target.sceneKitCoordinate(relativeTo: userLocation))")
-                //existingNode.runAction(move)
+                existingNode.runAction(move)
                 existingNode.runAction(scale)
 
             }
@@ -113,11 +113,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         if hitResults.count == 0 {
             let urlString = "http://192.241.200.251/arobject/"
             
-            let locationArray = [locationManager.location!.coordinate.latitude, locationManager.location!.coordinate.latitude]
+            let locationArray = [locationManager.location!.coordinate.latitude, locationManager.location!.coordinate.longitude]
 
-            param = ["description": "This is a description.",
+            param = ["description": "",
                      "location": "POINT(\(locationArray[0]) \(locationArray[1]))",
-                     "owner": "Olivia",
+                     "owner": "",
                      "asset": "bear.obj"]
                 
             let bodyString = buildQueryString(fromDictionary:param)
