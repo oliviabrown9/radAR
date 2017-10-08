@@ -113,19 +113,25 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let hitResults = sceneView.hitTest(location, options: nil)
         if hitResults.count == 0 {
-            var urlString = "http://192.241.200.251/arobject/"
+            let urlString = "http://192.241.200.251/arobject/"
             
             let locationArray = [locationManager.location!.coordinate.latitude, locationManager.location!.coordinate.latitude]
-            param = ["owner": "",
-                     "description": "",
-                     "location": "\(locationArray)",
+            param = ["description": "",
+                     "location": "POINT(\(locationArray[0]) \(locationArray[1]))",
+                     "owner": "",
                      "asset": "bear.obj"]
                 
-            urlString += buildQueryString(fromDictionary:param)
-            let url = URL(string: urlPath)!
+            let bodyString = buildQueryString(fromDictionary:param)
+            
+            let url = URL(string: urlString)!
             
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
+            request.httpBody = bodyString.data(using: .utf8)
+            
+            
+            
+            
             
             let session = URLSession.shared
             let task = session.dataTask(with: request) { (data, response, error) in
