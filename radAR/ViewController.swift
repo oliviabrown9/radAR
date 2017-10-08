@@ -13,12 +13,14 @@ import CoreLocation
 import SceneKit
 import ModelIO
 import SceneKit.ModelIO
+import Starscream
 
 class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
     
+   
     var urlPath = "http://192.241.200.251/arobject/"
     
     var param = ["lat": "37.8710439", "long": "-122.2507724"]
@@ -50,6 +52,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             updateBearPosition()
         }
     }
+    
+    var socket = WebSocket(url: URL(string: "ws://79406c46.ngrok.io/connect")!)
+    
     
     func updateBearPosition() {
         guard let userLocation = mostRecentUserLocation else {
@@ -118,6 +123,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         return node
     }
     
+    
+    
     func setupTap() {
         let tapRecognizer = UITapGestureRecognizer()
         tapRecognizer.numberOfTapsRequired = 1
@@ -154,6 +161,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             let temporaryTarget: Target = Target(id: "\(numberOfTaps)", lat: locationArray[0], long: locationArray[1])
             
             targetArray.append(temporaryTarget)
+            
+            /* Sends notification view websocket */
+            print("Here is the body string: \(bodyString)")
+            socket.write(string: bodyString)
 
             updateBearPosition()
         }
@@ -195,6 +206,22 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Comment next line once app is ready - good to check performance
         sceneView.showsStatistics = true
         print(targetArray)
+        
+        socket.onConnect = {
+            print("websocket is connected")
+        }
+        //websocketDidDisconnect
+        socket.onDisconnect = { (error: Error?) in
+            print("websocket is disconnected: \(error?.localizedDescription)")
+        }
+        //websocketDidReceiveMessage
+        socket.onText = { (text: String) in
+            print("got some text: \(text)")
+        }
+        //websocketDidReceiveData
+        socket.onData = { (data: Data) in
+            print("got some data: \(data.count)")
+        }
     }
 
     func buildQueryString(fromDictionary parameters: [String:String]) -> String {
