@@ -48,6 +48,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    var collectionAllowed: Bool = false
     func updateBearPosition() {
         guard let userLocation = mostRecentUserLocation else {
             print("yo this doesn't work")
@@ -58,6 +59,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             //update existing node if it exists
             
             let dist = target.location.distance(from: mostRecentUserLocation!)
+            checkCollectionAllowed(target: target)
             print("Distance to bear: \(dist)")
             if let existingNode = targetNodes[target.id] {
                 let scale_matrix = SCNMatrix4MakeScale(0.05, 0.05, 0.05)
@@ -145,8 +147,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func addCollected(collectedTarget: String) {
-        if !SharingManager.sharedInstance.collection.contains(collectedTarget) {
+        if !SharingManager.sharedInstance.collection.contains(collectedTarget) && collectionAllowed == true {
             SharingManager.sharedInstance.collection.append(collectedTarget)
+            collectionAllowed = false
+            
             print(SharingManager.sharedInstance.collection)
         }
     }
@@ -225,6 +229,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         if addAllowed == false {
             addAllowed = true
         }
+    }
+    
+    func checkCollectionAllowed(target: Target) {
+        let dist = target.location.distance(from: mostRecentUserLocation!)
+        if dist >= 5 {
+            collectionAllowed = false
+        }
+        else {
+            collectionAllowed = true
+        }
+    
     }
     
     // allow tap to add?
