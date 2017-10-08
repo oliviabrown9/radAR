@@ -1,0 +1,6 @@
+framework module Pods_radAR {
+  umbrella header "Pods-radAR-umbrella.h"
+
+  export *
+  module * { export * }
+}
