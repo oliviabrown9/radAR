@@ -234,20 +234,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // allow tap to add?
     // tap gesture recognizer
     
-    var didAdd: Bool = false
-    func handleTap() {
-        if addAllowed && !didAdd {
-
-                
-        }
-        else if didAdd {
-            didAdd = false
-            addAllowed = false
-        }
-        else {
-            // nothing?
-        }
-    }
+//    var didAdd: Bool = false
+//    func handleTap() {
+//        if addAllowed && !didAdd {
+//
+//
+//        }
+//        else if didAdd {
+//            didAdd = false
+//            addAllowed = false
+//        }
+//        else {
+//            // nothing?
+//        }
+//    }
 
     // MARK: - ARSCNViewDelegate
     
