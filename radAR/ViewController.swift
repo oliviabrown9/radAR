@@ -107,6 +107,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.gestureRecognizers = [tapRecognizer]
     }
     
+    var post: Bool = false
     var numberOfTaps: Int = 0
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         numberOfTaps -= 1
@@ -114,6 +115,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let hitResults = sceneView.hitTest(location, options: nil)
         if hitResults.count == 0 {
+            post = true
             let urlString = "http://192.241.200.251/arobject/"
             
             let locationArray = [locationManager.location!.coordinate.latitude, locationManager.location!.coordinate.longitude]
@@ -129,33 +131,36 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             request.httpMethod = "POST"
             request.httpBody = bodyString.data(using: .utf8)
             
+            constructTask(request: request)
+            
             let temporaryTarget: Target = Target(id: "\(numberOfTaps)", lat: locationArray[0], long: locationArray[1])
             
             targetArray.append(temporaryTarget)
 
             updateBearPosition()
         }
+        post = false
     }
     
     func constructTask(request: URLRequest) {
         let session = URLSession.shared
         let task = session.dataTask(with: request) { (data, response, error) in
             
-            if let data = data {
-                let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                if let testTarget: [Target]? = self.processJson(json: json) {
-                    if testTarget == nil {
-                        print("yall are fucked")
-                        print(json)
-                    } else {
-                        self.targetArray = testTarget!
-                        print("there should be a bear.")
+            if !self.post {
+                if let data = data {
+                    let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                    if let testTarget: [Target]? = self.processJson(json: json) {
+                        if testTarget == nil {
+                            print("yall are fucked")
+                            print(json)
+                        } else {
+                            self.targetArray = testTarget!
+                            print("there should be a bear.")
+                        }
                     }
-                    print(testTarget)
                 }
-                print(json)
             }
-        }
+    }
         task.resume()
     }
     
