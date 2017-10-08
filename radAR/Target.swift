@@ -82,3 +82,12 @@ extension CLLocationCoordinate2D {
         return radiansToDegrees(radiansBearing)
     }
 }
+
+
+
+struct TargetSerializer : Codable {
+    
+    public let latitude : Double
+    public let longitude : Double
+    
+}

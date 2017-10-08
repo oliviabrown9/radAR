@@ -100,13 +100,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-    func scaleTarget(recentUserLocation: CLLocation, target: Target) {
-        
-        let dist = recentUserLocation.distance(from: target.location)
-        
-        
-        
-    }
     
 
     func processJson(json: Any) -> [Target]? {
@@ -161,13 +154,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             constructTask(request: request)
             
             let temporaryTarget: Target = Target(id: "\(numberOfTaps)", lat: locationArray[0], long: locationArray[1])
-            
+            let serial_class = TargetSerializer(latitude: locationArray[0], longitude: locationArray[1])
             targetArray.append(temporaryTarget)
             
             /* Sends notification view websocket */
             print("Here is the body string: \(bodyString)")
-            socket.write(string: bodyString)
-
+            do {
+                 let payload: Data = try JSONEncoder().encode(serial_class)
+                socket.write(data: payload)
+            } catch { }
             updateBearPosition()
         }
         post = false
@@ -219,8 +214,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         //websocketDidReceiveData
         socket.onData = { (data: Data) in
-            print("got some data: \(data.count)")
-        }
+            do {
+                let anotherPerson = try JSONDecoder().decode(TargetSerializer.self, from: data); let ps = Target(id: "1", lat: anotherPerson.latitude, long: anotherPerson.longitude)
+                self.targetArray.append(ps)
+            }
+            catch {}
+            }
+        socket.connect()
     }
 
     func buildQueryString(fromDictionary parameters: [String:String]) -> String {
