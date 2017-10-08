@@ -295,7 +295,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8GEKYYW3CQ;
+
+				DEVELOPMENT_TEAM = 3W4P6VJ7EM;
+
 				INFOPLIST_FILE = radAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = stanford.isBetter.radAR;
@@ -310,7 +312,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8GEKYYW3CQ;
+
+				DEVELOPMENT_TEAM = 3W4P6VJ7EM;
+
 				INFOPLIST_FILE = radAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = stanford.isBetter.radAR;

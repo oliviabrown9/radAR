@@ -21,7 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var urlPath = "http://192.241.200.251/arobject/"
     
-    var param = ["lat": "37.8710439", "long": "-122.2507724", "alt": "10"]
+    var param = ["lat": "37.8710439", "long": "-122.2507724"]
     
     fileprivate let locationManager = CLLocationManager()
     
@@ -32,7 +32,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             print("LOADED USER LOCATION")
         }
     }
-    
+
     // Put API call here
     // Parse JSON to targetArray?
     var targetNodes = [String: SCNNode]()
@@ -57,16 +57,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         for target in targetArray {
             //update existing node if it exists
+            
+            let dist = target.location.distance(from: mostRecentUserLocation!)
+            print("Distance to bear: \(dist)")
             if let existingNode = targetNodes[target.id] {
                 print("node already exists")
+                /*
                 let move = SCNAction.move (
                     to: target.sceneKitCoordinate(relativeTo: userLocation),
                     duration: TimeInterval(2))
                 
-//                let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(2))
-                
+                let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(2))
+                 */
+                print("Node size: \(existingNode.scale)")
+                let scale_matrix = SCNMatrix4MakeScale(0.05, 0.05, 0.05)
+                existingNode.transform = scale_matrix
                 print("\(target.sceneKitCoordinate(relativeTo: userLocation))")
-                existingNode.runAction(move)
+
+                //existingNode.runAction(move)
+               // existingNode.runAction(scale)
+
 
             }
                 // otherwise, make a new node
@@ -83,14 +93,21 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
             }
         }
+    }
+    
+    func scaleTarget(recentUserLocation: CLLocation, target: Target) {
+        
+        let dist = recentUserLocation.distance(from: target.location)
+        
+        
         
     }
+    
 
     func processJson(json: Any) -> [Target]? {
         guard let targetData = json as? [[String: Any]] else {
             return nil
         }
-
         return targetData.flatMap(Target.init)
     }
 
@@ -119,9 +136,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             let urlString = "http://192.241.200.251/arobject/"
             
             let locationArray = [locationManager.location!.coordinate.latitude, locationManager.location!.coordinate.longitude]
-            param = ["description": "This is a description.",
+
+
+            param = ["description": "",
+
                      "location": "POINT(\(locationArray[0]) \(locationArray[1]))",
-                     "owner": "Olivia",
+                     "owner": "",
                      "asset": "bear.obj"]
                 
             let bodyString = buildQueryString(fromDictionary:param)
@@ -146,6 +166,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let session = URLSession.shared
         let task = session.dataTask(with: request) { (data, response, error) in
             
+
             if !self.post {
                 if let data = data {
                     let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
@@ -160,7 +181,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     }
                 }
             }
-    }
+        }
         task.resume()
     }
     
@@ -172,13 +193,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
         // Comment next line once app is ready - good to check performance
         sceneView.showsStatistics = true
-        
         print(targetArray)
     }
-    
+
     func buildQueryString(fromDictionary parameters: [String:String]) -> String {
         var urlVars:[String] = []
-        
         for (k, value) in parameters {
             if let encodedValue = value.addingPercentEncoding(withAllowedCharacters:.urlQueryAllowed) {
                 urlVars.append(k + "=" + encodedValue)
@@ -192,6 +211,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         super.viewWillAppear(animated)
         
         setUpLocationManager()
+        setupTap()
 
         urlPath += buildQueryString(fromDictionary:param)
         let url = URL(string: urlPath)!
@@ -212,23 +232,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Pause the view's session
         sceneView.session.pause()
     }
-    
-//
-//    func touchesBegan(touches: Set<UITouch>, with event: UIEvent?) {
-//        guard let sceneView = self.view as? ARSCNView else {
-//            return
-//        }
-//
-//        if let currentFrame = sceneView.session.currentFrame {
-//
-//            // Create a transform with a translation of 0.2 meters in front of the camera
-//            var translation = matrix_identity_float4x4
-//            translation.columns.3.z = -0.4
-//            let transform = simd_mul(currentFrame.camera.transform, translation)
-//
-//
-//        }
-//    }
     
     var addAllowed: Bool = false
     // MARK: add target button
@@ -296,6 +299,7 @@ extension ViewController: CLLocationManagerDelegate {
     // Updates location variable every time location changes
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         mostRecentUserLocation = locations[0] as CLLocation
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
@@ -324,5 +328,3 @@ extension String {
         return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
     }
 }
-
-
