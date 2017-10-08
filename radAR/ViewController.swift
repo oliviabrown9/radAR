@@ -149,11 +149,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                         self.targetArray = testTarget!
                         print("there should be a bear.")
                     }
-                    
                     print(testTarget)
                 }
                 print(json)
-                
             }
         }
         task.resume()
@@ -181,13 +179,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             
             
         }
-    
-    
-  
-        
-    
-    
-        
     }
     var addAllowed: Bool = false
     // MARK: add target button
@@ -219,10 +210,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - ARSCNViewDelegate
     
     // Override to create and configure nodes for anchors added to the view's session.
-//    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-//
-//
-//    }
+
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+    }
+
 
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
