@@ -14,16 +14,12 @@
 		7531C5C71F88AD91009223EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7531C5C61F88AD91009223EC /* Assets.xcassets */; };
 		7531C5CA1F88AD91009223EC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7531C5C81F88AD91009223EC /* LaunchScreen.storyboard */; };
 		754271111F88FE9D00936E9A /* Target.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754271101F88FE9D00936E9A /* Target.swift */; };
-		BA68601A1F8A1A5100140A58 /* DirectionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6860191F8A1A5100140A58 /* DirectionsVC.swift */; };
 		BAB8A79E1F88B08D00464DE9 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8A79D1F88B08D00464DE9 /* UserDefaults.swift */; };
 		BAB8A7A51F88E95900464DE9 /* bear.obj in Resources */ = {isa = PBXBuildFile; fileRef = BAB8A7A31F88E90D00464DE9 /* bear.obj */; };
 		BAB8A7A61F88E95C00464DE9 /* bear.mtl in Resources */ = {isa = PBXBuildFile; fileRef = BAB8A7A41F88E91400464DE9 /* bear.mtl */; };
-		E2ADD1CA8348FF54342D8D54 /* Pods_radAR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1724C7F1BA584898A195A79B /* Pods_radAR.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0ACE8C5BF80C8F0FE9252FD1 /* Pods-radAR.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-radAR.debug.xcconfig"; path = "Pods/Target Support Files/Pods-radAR/Pods-radAR.debug.xcconfig"; sourceTree = "<group>"; };
-		1724C7F1BA584898A195A79B /* Pods_radAR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_radAR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7531C5BA1F88AD91009223EC /* radAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = radAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7531C5BD1F88AD91009223EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7531C5BF1F88AD91009223EC /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -33,11 +29,9 @@
 		7531C5C91F88AD91009223EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7531C5CB1F88AD91009223EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		754271101F88FE9D00936E9A /* Target.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Target.swift; sourceTree = "<group>"; };
-		BA6860191F8A1A5100140A58 /* DirectionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsVC.swift; sourceTree = "<group>"; };
 		BAB8A79D1F88B08D00464DE9 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		BAB8A7A31F88E90D00464DE9 /* bear.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = bear.obj; sourceTree = "<group>"; };
 		BAB8A7A41F88E91400464DE9 /* bear.mtl */ = {isa = PBXFileReference; lastKnownFileType = text; path = bear.mtl; sourceTree = "<group>"; };
-		EEAC52E3C36C612F933C19A3 /* Pods-radAR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-radAR.release.xcconfig"; path = "Pods/Target Support Files/Pods-radAR/Pods-radAR.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,28 +39,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E2ADD1CA8348FF54342D8D54 /* Pods_radAR.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1E85D3CEF6CCD5FC58B15EC8 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				1724C7F1BA584898A195A79B /* Pods_radAR.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		7531C5B11F88AD91009223EC = {
 			isa = PBXGroup;
 			children = (
 				7531C5BC1F88AD91009223EC /* radAR */,
 				7531C5BB1F88AD91009223EC /* Products */,
-				D1E2BF9C3EECA7F552D3349E /* Pods */,
-				1E85D3CEF6CCD5FC58B15EC8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -92,18 +75,8 @@
 				BAB8A79D1F88B08D00464DE9 /* UserDefaults.swift */,
 				BAB8A7A31F88E90D00464DE9 /* bear.obj */,
 				BAB8A7A41F88E91400464DE9 /* bear.mtl */,
-				BA6860191F8A1A5100140A58 /* DirectionsVC.swift */,
 			);
 			path = radAR;
-			sourceTree = "<group>";
-		};
-		D1E2BF9C3EECA7F552D3349E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				0ACE8C5BF80C8F0FE9252FD1 /* Pods-radAR.debug.xcconfig */,
-				EEAC52E3C36C612F933C19A3 /* Pods-radAR.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -113,12 +86,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7531C5CE1F88AD91009223EC /* Build configuration list for PBXNativeTarget "radAR" */;
 			buildPhases = (
-				3D9339D5E8CAC196A3F3A19B /* [CP] Check Pods Manifest.lock */,
 				7531C5B61F88AD91009223EC /* Sources */,
 				7531C5B71F88AD91009223EC /* Frameworks */,
 				7531C5B81F88AD91009223EC /* Resources */,
-				248F4268553E9303A31CAD70 /* [CP] Embed Pods Frameworks */,
-				17CFFECB69EE88AB4844A24E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -179,54 +149,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		17CFFECB69EE88AB4844A24E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-radAR/Pods-radAR-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		248F4268553E9303A31CAD70 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-radAR/Pods-radAR-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3D9339D5E8CAC196A3F3A19B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		7531C5B61F88AD91009223EC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -235,7 +157,6 @@
 				7531C5C21F88AD91009223EC /* ViewController.swift in Sources */,
 				7531C5BE1F88AD91009223EC /* AppDelegate.swift in Sources */,
 				754271111F88FE9D00936E9A /* Target.swift in Sources */,
-				BA68601A1F8A1A5100140A58 /* DirectionsVC.swift in Sources */,
 				BAB8A79E1F88B08D00464DE9 /* UserDefaults.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -371,15 +292,10 @@
 		};
 		7531C5CF1F88AD91009223EC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0ACE8C5BF80C8F0FE9252FD1 /* Pods-radAR.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
 				DEVELOPMENT_TEAM = 8GEKYYW3CQ;
-=======
-				DEVELOPMENT_TEAM = U7U96T5227;
->>>>>>> origin/master
 				INFOPLIST_FILE = radAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = stanford.isBetter.radAR;
@@ -391,15 +307,10 @@
 		};
 		7531C5D01F88AD91009223EC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EEAC52E3C36C612F933C19A3 /* Pods-radAR.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
 				DEVELOPMENT_TEAM = 8GEKYYW3CQ;
-=======
-				DEVELOPMENT_TEAM = U7U96T5227;
->>>>>>> origin/master
 				INFOPLIST_FILE = radAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = stanford.isBetter.radAR;
