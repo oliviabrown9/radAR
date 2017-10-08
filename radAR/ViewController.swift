@@ -18,6 +18,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
+    
     var urlPath = "http://192.241.200.251/arobject/"
     
     var param = ["lat": "37.8710439", "long": "-122.2507724", "alt": "10"]
@@ -62,11 +63,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     to: target.sceneKitCoordinate(relativeTo: userLocation),
                     duration: TimeInterval(5))
                 
-                let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(5))
+//                let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(5))
                 
                 print("\(target.sceneKitCoordinate(relativeTo: userLocation))")
                 existingNode.runAction(move)
-                existingNode.runAction(scale)
+//                existingNode.runAction(scale)
             }
                 // otherwise, make a new node
             else {
@@ -76,8 +77,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 newNode.position = target.sceneKitCoordinate(relativeTo: userLocation)
                 sceneView.scene.rootNode.addChildNode(newNode)
                 
-                let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(5))
-                newNode.runAction(scale)
+//                let scale = SCNAction.scale(by: 0.5, duration: TimeInterval(5))
+//                newNode.runAction(scale)
             }
         }
         
@@ -140,8 +141,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
             if let data = data {
                 let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                let testTarget: [Target]? = self.processJson(json: json)
-                self.targetArray = testTarget!
+                if let testTarget: [Target]? = self.processJson(json: json) {
+                    if testTarget == nil {
+                        print("yall are fucked")
+                        print(json) 
+                    } else {
+                        self.targetArray = testTarget!
+                        print("there should be a bear.")
+                    }
+                    print(testTarget)
+                }
+                print(json)
             }
         }
         task.resume()
@@ -153,12 +163,54 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Pause the view's session
         sceneView.session.pause()
     }
+    
+    
+    func touchesBegan(touches: Set<UITouch>, with event: UIEvent?) {
+        guard let sceneView = self.view as? ARSCNView else {
+            return
+        }
+        
+        if let currentFrame = sceneView.session.currentFrame {
+            
+            // Create a transform with a translation of 0.2 meters in front of the camera
+            var translation = matrix_identity_float4x4
+            translation.columns.3.z = -0.4
+            let transform = simd_mul(currentFrame.camera.transform, translation)
+            
+            
+        }
+    }
+    var addAllowed: Bool = false
+    // MARK: add target button
+    @IBAction func addTargetButtonPressed(_ sender: UIBarButtonItem) {
+        
+        if addAllowed == false {
+            addAllowed = true
+        }
+    }
+    
+    // allow tap to add?
+    // tap gesture recognizer
+    
+    var didAdd: Bool = false
+    func handleTap() {
+        if addAllowed && !didAdd {
+
+                
+        }
+        else if didAdd {
+            didAdd = false
+            addAllowed = false
+        }
+        else {
+            // nothing?
+        }
+    }
 
     // MARK: - ARSCNViewDelegate
     
     // Override to create and configure nodes for anchors added to the view's session.
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        
     }
 
     func session(_ session: ARSession, didFailWithError error: Error) {
